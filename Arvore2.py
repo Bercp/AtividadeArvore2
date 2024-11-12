@@ -2,53 +2,53 @@ def criar_arvore():
     return None
 
 
-def criar_no(valor):
-    return {"valor": valor, "esquerda": None, "direita": None,"nome": None, "descrição": None ,"preco": None}
+def criar_no(ID):
+    return {"ID": ID, "esquerda": None, "direita": None,"nome": None, "descrição": None ,"preco": None}
 
-def adicionar(raiz, valor, nome, descricao, preco):
+def adicionar(raiz, ID, nome, descricao, preco):
     if raiz is None:
-        return {"valor": valor, "esquerda": None, "direita": None, "nome": nome, "descrição": descricao, "preco": preco}
+        return {"ID": ID, "esquerda": None, "direita": None, "nome": nome, "descrição": descricao, "preco": preco}
 
-    if valor < raiz["valor"]:
-        raiz["esquerda"] = adicionar(raiz["esquerda"], valor, nome, descricao, preco)
-    elif valor > raiz["valor"]:
-        raiz["direita"] = adicionar(raiz["direita"], valor, nome, descricao, preco)
+    if ID < raiz["ID"]:
+        raiz["esquerda"] = adicionar(raiz["esquerda"], ID, nome, descricao, preco)
+    elif ID > raiz["ID"]:
+        raiz["direita"] = adicionar(raiz["direita"], ID, nome, descricao, preco)
 
     return raiz
 
 
-def remover(raiz, valor):
+def remover(raiz, ID):
     if raiz is None:
         return raiz
 
-    if valor < raiz["valor"]:
-        raiz["esquerda"] = remover(raiz["esquerda"], valor)
-    elif valor > raiz["valor"]:
-        raiz["direita"] = remover(raiz["direita"], valor)
+    if ID < raiz["ID"]:
+        raiz["esquerda"] = remover(raiz["esquerda"], ID)
+    elif ID > raiz["ID"]:
+        raiz["direita"] = remover(raiz["direita"], ID)
     else:
         if raiz["esquerda"] is None:
             return raiz["direita"]
         elif raiz["direita"] is None:
             return raiz["esquerda"]
 
-        temp = menor_valor(raiz["direita"])
-        raiz["valor"] = temp["valor"]
-        raiz["direita"] = remover(raiz["direita"], temp["valor"])
+        temp = menor_ID(raiz["direita"])
+        raiz["ID"] = temp["ID"]
+        raiz["direita"] = remover(raiz["direita"], temp["ID"])
 
     return raiz
 
 
-def procurar(raiz, valor):
-    if raiz is None or raiz["valor"] == valor:
+def procurar(raiz, ID):
+    if raiz is None or raiz["ID"] == ID:
         return raiz
 
-    if valor < raiz["valor"]:
-        return procurar(raiz["esquerda"], valor)
+    if ID < raiz["ID"]:
+        return procurar(raiz["esquerda"], ID)
     else:
-        return procurar(raiz["direita"], valor)
+        return procurar(raiz["direita"], ID)
 
 
-def menor_valor(raiz):
+def menor_ID(raiz):
     atual = raiz
     while atual and atual["esquerda"] is not None:
         atual = atual["esquerda"]
@@ -57,7 +57,7 @@ def menor_valor(raiz):
 
 def exibir_pre_ordem(raiz):
     if raiz:
-        print(raiz["valor"], end=" ")
+        print(raiz["ID"], end=" ")
         exibir_pre_ordem(raiz["esquerda"])
         exibir_pre_ordem(raiz["direita"])
 
@@ -65,7 +65,7 @@ def exibir_pre_ordem(raiz):
 def exibir_em_ordem_simetrica(raiz):
     if raiz:
         exibir_em_ordem_simetrica(raiz["esquerda"])
-        print(raiz["valor"], end=" ")
+        print(raiz["ID"], end=" ")
         exibir_em_ordem_simetrica(raiz["direita"])
 
 
@@ -73,7 +73,7 @@ def exibir_pos_ordem(raiz):
     if raiz:
         exibir_pos_ordem(raiz["esquerda"])
         exibir_pos_ordem(raiz["direita"])
-        print(raiz["valor"], end=" ")
+        print(raiz["ID"], end=" ")
 
 
 def menu():
@@ -92,29 +92,31 @@ def menu():
         opcao = input("Escolha uma opção: ")
 
         if opcao == "1":
-            valor = int(input("Digite o ID a ser adicionado: "))
+            ID = int(input("Digite o ID a ser adicionado: "))
             
             nome = str(input("Digite o Nome a ser adicionado: "))
             
             descricao = str(input("Digite a Descricao a ser adicionado: "))
             
-            preco = int(input("Digite o valor a ser adicionado: "))
-            raiz = adicionar(raiz, valor, nome, descricao, preco)
-            print("Valor ", valor, " adicionado")
+            preco = int(input("Digite o Preco a ser adicionado: "))
+            raiz = adicionar(raiz, ID, nome, descricao, preco)
+            print("ID ", ID, " adicionado")
 
         elif opcao == "2":
-            valor = int(input("Digite o valor a ser removido: "))
-            raiz = remover(raiz, valor)
-            print("Valor ", valor, " remvido")
+            ID = int(input("Digite o ID a ser removido: "))
+            raiz = remover(raiz, ID)
+            print("ID ", ID, " remvido")
 
         elif opcao == "3":
-            valor = int(input("Digite o valor do ID a ser buscado: "))
-            resultado = procurar(raiz, valor)
+            ID = int(input("Digite o ID do ID a ser buscado: "))
+            resultado = procurar(raiz, ID)
             if resultado:
-             for chave, valor_atributo in resultado.items():
-                print(f"{chave}: {valor_atributo}")
+             for chave, ID_atributo in resultado.items():
+                if chave not in ["esquerda", "direita"]:
+                
+                    print(f"{chave}: {ID_atributo}")
             else:
-                print("Valor ", valor, " Nao encontrado na Arvore")
+                print("ID ", ID, " Nao encontrado na Arvore")
 
         elif opcao == "4":
             print("Exibindo pre-ordem:")
@@ -136,11 +138,7 @@ def menu():
             break
 
 
-
-
         else:
             print("Opção inválida! Digite um numero do menu.")
 
 menu()
-
-
